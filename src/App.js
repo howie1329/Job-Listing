@@ -6,7 +6,7 @@ import data from "./data.json";
 import backgroundImage from "./images/bg-header-mobile.svg";
 
 function App() {
-  const [filter, setFilter] = useState([]);
+  const [filter, setFilter] = useState([...data]);
   const [type, settype] = useState([]);
 
   useEffect(() => {
@@ -14,40 +14,48 @@ function App() {
       setFilter(data);
       console.log("Effect Run");
     }
-  }, [type.length]);
+  });
 
-  const onClick = (newType) => {
-    const typeData = type;
-    if (typeData.includes(newType)) {
-      typeData.pop(newType);
-      console.log(typeData);
-      return settype(typeData);
+  const levelClick = (levelValue) => {
+    typeCheck(levelValue);
+    const result = filter.filter((item) => {
+      if (item.level === levelValue) {
+        return item;
+      }
+    });
+    console.log(result);
+    const arr = [];
+    for (let index = 0; index < result.length; index++) {
+      arr.push(result[index]);
     }
-    typeData.push(newType);
-    settype(typeData);
-    find(type);
+    setFilter(arr);
   };
 
-  const find = (filterTypes) => {
-    const test = filterTypes.map((type) =>
-      data.filter((item) => {
-        if (
-          item.role === type ||
-          item.level === type ||
-          item.location === type
-        ) {
-          return item;
-        }
-      })
-    );
+  const roleClick = (roleValue) => {
+    typeCheck(roleValue);
+    const result = filter.filter((item) => {
+      if (item.role === roleValue) {
+        return item;
+      }
+    });
+    console.log(result);
     const arr = [];
-    for (let index = 0; index < test.length; index++) {
-      console.log(test[index]);
-      arr.push(...test[index]);
+    for (let index = 0; index < result.length; index++) {
+      arr.push(result[index]);
     }
-    console.log(arr);
-    console.log([...filter]);
     setFilter(arr);
+  };
+
+  const typeCheck = (value) => {
+    let typeArr = type;
+    if (typeArr.includes(value)) {
+      typeArr = type;
+      typeArr.pop(value);
+      return settype(typeArr);
+    }
+    typeArr.push(value);
+    settype(typeArr);
+    console.log(type);
   };
 
   const styleClass = () => {
@@ -58,7 +66,6 @@ function App() {
       className =
         "flex justify-between max-w-full h-10 px-2 border-transparent border-2 bg-lgcyan";
     }
-
     const onClear = () => {
       settype([]);
     };
@@ -70,7 +77,7 @@ function App() {
               <button
                 className="border-2 border-transparent bg-ddcyan text-white font-bold rounded-lg px-4"
                 value={item}
-                onClick={(e) => onClick(e.target.value)}
+                onClick={(e) => typeCheck(e.target.value)}
               >
                 {item}
               </button>
@@ -101,7 +108,8 @@ function App() {
               key={index}
               Job={item}
               results={filter}
-              onFilter={onClick}
+              levelClick={levelClick}
+              roleClick={roleClick}
             />
           );
         })}

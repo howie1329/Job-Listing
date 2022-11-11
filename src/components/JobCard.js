@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function JobCard({ Job, onFilter, results }) {
+export default function JobCard({ Job, roleClick, levelClick }) {
   const newStatus = () => {
     if (Job.new) {
       return (
@@ -25,14 +25,14 @@ export default function JobCard({ Job, onFilter, results }) {
         <button
           className=" border-2 border-transparent bg-lgcyanf text-ddcyan font-bold rounded-lg px-4"
           value={Job.role}
-          onClick={(e) => onFilter(e.target.value)}
+          onClick={(e) => roleClick(e.target.value)}
         >
           {Job.role}
         </button>
         <button
           className=" border-2 border-transparent bg-lgcyanf text-ddcyan font-bold rounded-lg px-4"
           value={Job.level}
-          onClick={(e) => onFilter(e.target.value)}
+          onClick={(e) => levelClick(e.target.value)}
         >
           {Job.level}
         </button>
